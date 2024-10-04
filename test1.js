@@ -3,21 +3,22 @@ import {RecursiveInterp, convert_echarts} from './RecursiveInterp.js';
 // make my data
 //const chartData = convert_echarts(ex3);
 const ex = [];
-for (let i = 0; i < 8; i++) {
+const N = 9;
+for (let i = 0; i < N; i++) {
   ex.push({ x: i, y: 0 });
 }
 const ex2 = [];
-for (let i = 0; i < 8; i++) {
+for (let i = 0; i < N; i++) {
   ex2.push({ x: i, y: structuredClone(ex) });
 }
 
 const ex3 = [];
-for (let i = 0; i < 8; i++) {
+for (let i = 0; i < N; i++) {
   ex3.push({ x: i, y: structuredClone(ex2) });
 }
 
 const ex4 = [];
-for (let i = 0; i < 8; i++) {
+for (let i = 0; i < N; i++) {
   ex4.push({ x: i, y: structuredClone(ex3) });
 }
 
@@ -33,11 +34,14 @@ const chartOpts = {
       type: 'graphGL',
       layout: 'force',
       forceAtlas2: {
-        scaling: 0.8,
+        steps: 5,
+        stopThreshold: 1,
+        maxSteps: 100000,
+        scaling: 0.4,
         strongGravityMode: false,
         edgeWeight: 0.1,
         nodeWeight: 1,
-        gravity: 25,
+        gravity: 20,
         linLog: true
       },
       force: { 
@@ -63,16 +67,19 @@ const chartOpts = {
       }
     }
   ],
-  animationDuration: 10000,
+  animationDuration: 1000000,
   animationEasing: 'linear',
   animationEasingUpdate: 'linear',
-  animationDurationUpdate: 10000
+  animationDurationUpdate: 1000000
 };
 myChart.setOption(chartOpts);
 
 function myresize() {
   console.log("In 'myresize'");
-  myChart.resize({});
+  //myChart.resize({});
+  myChart.clear;
+  myChart.setOption(chartOpts);
+
 }
 
 //document.getElementsByTagName("body")[0].onresize = myresize;
