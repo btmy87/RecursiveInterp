@@ -5,19 +5,19 @@
 // or a table
 
 
-let ex1 = [
+export const ex1 = [
   { x: 0, y: 0 },
   { x: 1, y: 1 },
   { x: 2, y: 4 },
   { x: 3, y: 9 }
 ];
 
-let ex2 = [
+export const ex2 = [
   { x: 0, y: [{ x: 0, y: 0 }, { x: 1, y: 0 }]},
   { x: 1, y: [{ x: 0, y: 0 }, { x: 1, y: 1 }]}
 ];
 
-let ex3 = [
+export const ex3 = [
   {
     x: 0, y: [
       { x: 0, y: [{ x: 0, y: 0 }, { x: 1, y: 0 }] },
@@ -67,40 +67,32 @@ export function convert_echarts(t, nodes=[], links=[]) {
   nodes.push({ value: t.length });
   let src = nodes.length - 1;
 
+  let lastNode;
+  let nextNode;
   for (let i = 0; i < t.length; i++) {
     // create a new node
+    nextNode = nodes.length;
     if (Array.isArray(t[i].y)) {
-      let nextNode = nodes.length;
       convert_echarts(t[i].y, nodes, links);
-      // create link from src to head of the subtree we just added
-      links.push({
-        source: src,
-        target: nextNode,
-        value: 1,
-        lineStyle: { color: "#0072bd" }
-      })
     } else {
       // create node
       nodes.push({ value: 1 });
-
-      // create link to source
-      links.push({
-        source: src,
-        target: nodes.length - 1,
-        value: 1,
-        lineStyle: { color: "#0072bd"}
-      });
-
-      //if (i > 0) {
-      //  // create link to neighbor
-      //  links.push({
-      //    source: nodes.length - 2,
-      //    target: nodes.length - 1,
-      //    value: 1,
-      //    lineStyle: { color: "#d95319" }
-      //  });
-      //}
     }
+    links.push({
+      source: src,
+      target: nextNode,
+      value: 1,
+      lineStyle: { color: "#0072bd" }
+    })
+    if (i > 0) {
+      links.push({
+        source: lastNode,
+        target: nextNode,
+        value: 1,
+        lineStyle: { color: "#d95319", type: "dotted" }
+      });
+    }
+    lastNode = nextNode;
   }
   return { nodes: nodes, links: links }
 
@@ -113,3 +105,4 @@ let out1 = convert_echarts(ex1);
 console.log(out1);
 let out2 = convert_echarts(ex2);
 console.log(out2);
+console.log("");
