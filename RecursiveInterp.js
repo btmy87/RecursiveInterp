@@ -60,11 +60,17 @@ export function RecursiveInterp(t, xi) {
   }
 }
 
-export function convert_echarts(t, nodes=[], links=[]) {
+const clist = ["#0072bd", "#d95319", "#edb120", "#7e2f8e",
+  "#77ac30", "#4dbeee", "#a2142f", "#9a60b4", "#ea7ccc"];
+
+export function convert_echarts(t, nodes=[], links=[], level=0) {
   // generate nodes and links that we can pass to echarts graph series
 
   // we need an initial node to get things started
-  nodes.push({ value: t.length });
+  nodes.push({
+    value: t.length,
+    itemStyle: { color: clist[level]}
+  });
   let src = nodes.length - 1;
 
   let lastNode;
@@ -73,23 +79,26 @@ export function convert_echarts(t, nodes=[], links=[]) {
     // create a new node
     nextNode = nodes.length;
     if (Array.isArray(t[i].y)) {
-      convert_echarts(t[i].y, nodes, links);
+      convert_echarts(t[i].y, nodes, links, level+1);
     } else {
       // create node
-      nodes.push({ value: 1 });
+      nodes.push({
+        value: 1,
+        itemStyle: {color: clist[level+1]}
+      });
     }
     links.push({
       source: src,
       target: nextNode,
-      value: 1,
-      lineStyle: { color: "#0072bd" }
+      value: (level+1)/5,
+      lineStyle: { color: clist[level] }
     })
     if (i > 0) {
       links.push({
         source: lastNode,
         target: nextNode,
-        value: 1,
-        lineStyle: { color: "#d95319", type: "dotted" }
+        value: (level+1)/5,
+        lineStyle: { color: clist[level], type: "dotted" }
       });
     }
     lastNode = nextNode;
@@ -98,11 +107,11 @@ export function convert_echarts(t, nodes=[], links=[]) {
 
 }
 
-console.log("ex1: ", RecursiveInterp(ex1, [0.5]));
-console.log("ex2: ", RecursiveInterp(ex2, [0.5, 0.5]));
-console.log("ex3: ", RecursiveInterp(ex3, [0.5, 0.5, 0.5]));
-let out1 = convert_echarts(ex1);
-console.log(out1);
-let out2 = convert_echarts(ex2);
-console.log(out2);
-console.log("");
+//console.log("ex1: ", RecursiveInterp(ex1, [0.5]));
+//console.log("ex2: ", RecursiveInterp(ex2, [0.5, 0.5]));
+//console.log("ex3: ", RecursiveInterp(ex3, [0.5, 0.5, 0.5]));
+//let out1 = convert_echarts(ex1);
+//console.log(out1);
+//let out2 = convert_echarts(ex2);
+//console.log(out2);
+//console.log("");

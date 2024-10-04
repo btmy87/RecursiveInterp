@@ -1,86 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
-  <script src="mytheme.js"></script>
-  <script> src="./RecursiveInterp.js"</script>
-  <style>
-    body {
-      background-color: black
-    }
-  </style>
-  <title>Recurve Interpolation Graph</title>
-  <script type="module"> 
-    import {RecursiveInterp, convert_echarts, ex1, ex2, ex3} from './RecursiveInterp.js';
-
-    var myChart;
-    function init() {
-      myChart = echarts.init(document.getElementById('main'), 'mytheme');
-      let chartData = convert_echarts(ex3);
-      chartData.nodes[0].symbol = 'diamond';
-      chartData.nodes[0].symbolSize = 20;
-      let chartOpts = {
-        series: [
-          {
-            type: 'graph',
-            layout: 'force',
-            forceAtlas2: {
-              steps: 1,
-              jitterTolerance: 10,
-              edgeWeightInfluence: 1,
-              initLayout: null,
-              GPU: false,
-              scaling: 20,
-              repulsionByDegree: false,
-              linLogMode: false,
-              strongGravityMode: false,
-              stopThreshold: 1,
-              edgeWeight: [1,4],
-              nodeWeight: [1, 4],
-              preventOverlap: true
-            },
-            force: { 
-              initLayout: 'circular',
-              repulsion: 50,
-              friction: 0.6
-            },
-            nodes: chartData.nodes,
-            links: chartData.links,
-            symbolSize: 10,
-            symbol: 'circle',
-            itemStyle: {
-              color: 'rgb(0,114,189)',
-              borderColor: 'rgb(0,114,189)',
-              opacity: 0.5
-            },
-            lineStyle: {
-              width: 3,
-              color: 'rgba(0,114,189,0.5)'
-            }
-          }
-        ],
-        animationDuration: 10000,
-        animationEasing: 'linear',
-        animationEasingUpdate: 'linear',
-        animationDurationUpdate: 10000
-      };
-      myChart.setOption(chartOpts);
-      console.log("test");
-    }
-
-    function myresize() {
-      myChart.resize();
-    }
-
-    //document.addEventListener("load", () => init());
-    //document.addEventListener("resize", () => myresize());
-    document.getElementsByTagName("body")[0].onload = init();
-
-  </script>
-</head>
-<body></body>
-  <div id="main" style="width: 100%; height: 100vh;"></div>
-</body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+    <script src="mytheme.js"></script>
+    <script type="module" src="test1.js"></script>
+    <style>
+      body {
+        background-color: black;
+      }
+    </style>
+    <title>Recurve Interpolation Graph</title>
+  </head>
+  <body>
+    <div id="main" style="width: 100%; height: 100vh"></div>
+  </body>
 </html>
